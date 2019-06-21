@@ -58,10 +58,8 @@ int calculateNewHand (int currentHand, int cardDrawn)
 		{
 			
 				newHandisSoft = false;
-				newHand = newHandValue - 4;
-			
+				newHand = newHandValue - 4;	
 		}
-		
 		
 	}
 	else if(newHandisSoft == false)
@@ -76,7 +74,6 @@ int calculateNewHand (int currentHand, int cardDrawn)
 	}
 	if(newHandValue > 21)
 		newHand = 28;
-	
 
 return newHand;	
 	
@@ -95,11 +92,9 @@ void calculateTransitionMatrix()
 			{
 					if(i != j)
 						p[i][j]= 0;
-				
-				
+					
 			}
 				
-			
 		}
 		else
 		{
@@ -107,18 +102,13 @@ void calculateTransitionMatrix()
 				{
 					int j = calculateNewHand(i, k);
 				
-					
 					if(k == 10)
 						temp = faceCardProb;
 					else
-						temp = nonFaceCardProb;
-						
+						temp = nonFaceCardProb;	
 					
-					p[i][j] = float(p[i][j] + temp);
-					
+					p[i][j] = float(p[i][j] + temp);	
 				}
-			
-			
 		}
 		
 	}
@@ -147,12 +137,10 @@ void copyTransitionMatrix()
 			for(int j=0;j<=28;j++)
 				pN[i][j] = p[i][j];
 	
-	
 }
 
 void printFinalTransitionMatrix()
 {
-	
 		for(int i=0;i<=28;i++)
 		{
 			
@@ -177,15 +165,12 @@ void calculateFinalP()
 					{
 						tempP[i][j]=tempP[i][j]+pN[i][k]*p[k][j];
 						
-					}
-				
-						
+					}	
 				}
 			 }
 			 for(int i=0;i<29;i++)
 				for(int j =0;j<29;j++)
 					pN[i][j]=tempP[i][j];
-			// printFinalTransitionMatrix();
 		}
 		
 	
@@ -214,8 +199,6 @@ void calculatePI(){
 	
 	for(int i=0;i<=28;i++)
 		pi1[i]=tempPI1[0][i];
-	
-	
 	}
 
 
@@ -232,19 +215,16 @@ int  getHand(int upCard, int nextCard){
 	if(soft)
 	{
 		value = value + 6 + 10;
-		return value ;
-		
-		
-		
+		return value ;	
 	}
 	else
 	{
 			value -=4;
 			return value;
 	}
-	
-	
 	}
+
+
 void calculateDealersStartingHand(int upCard)
 {
 		for(int i=0;i<=28;i++)
@@ -258,20 +238,17 @@ void calculateDealersStartingHand(int upCard)
 				pi[hand] = faceCardProb;
 			else
 				pi[hand] = nonFaceCardProb;
-			
-			
 		}
-	
-	
-	
 }
+
 
 void printPI(){
 	
 	for(int i=0;i<=28;i++)
 		cout<<pi1[i]<<" ";
 	
-	}
+}
+
 
 int calculateNextHand(int hand, int upCard)
 {
@@ -317,7 +294,6 @@ int calculateNextHand(int hand, int upCard)
 	temp = 7 + upCard;
 	if(temp > 17)
 	temp=28;
-	
 	return temp;	
 		
 	}
@@ -346,18 +322,9 @@ void makeHitTransitionMatrix(){
 						htm[i][j] = htm[i][j] + faceCardProb;
 					else
 						htm[i][j] = htm[i][j] + nonFaceCardProb;
-					
-					
-					
 				}	
-				
 			}
-		
-		
 	}
-	
-	
-	
 }
 
 
@@ -369,6 +336,8 @@ float getLoss(int upCard)
 		return nonFaceCardProb;
 	return 0.0;
 }
+
+
 void initializeC()
 {
 	for(int i=0;i<29;i++)
@@ -387,28 +356,30 @@ void initializeC()
 	{
 			calculateDealersStartingHand(k);
 			calculatePI();
-			//cout<<"\n\n";
-			//printPI();
-			//cout<<"\n\n";
+			
 			win[27][k]=0.0;
 			loss[27][k]=0.0;
 			win[17][k]=0.0;
 			loss[17][k]=0.0;
+		
 			for(int i = 23;i<=26;i++)
 				win[27][k] += pi1[i];
 			
 			for(int i = 13;i<17;i++)
 				win[27][k] +=pi1[i];
+		
 			win[27][k] +=pi1[28];
 			
 			
 			for(int i = 23;i<=26;i++)
 				win[17][k] += pi1[i];
+		
 			for(int i = 13;i<=16;i++)
 				win[17][k] +=pi1[i];
+		
 			win[17][k]+=pi1[28];
 			
-			//loss[17][k]+=pi1[27];
+			
 			loss[17][k] += getLoss(k);
 			loss[27][k] += getLoss(k);
 	 
@@ -429,7 +400,6 @@ float getdoubleDownReward(int currHand, int upCard)
 		else
 			e[0][i]=0.0;
 	
-	
 	for(int i=0;i< 1;i++)
 	 {
 			for(int j=0;j<= 28;j++)
@@ -439,21 +409,14 @@ float getdoubleDownReward(int currHand, int upCard)
 					{
 						tempPI[i][j]=tempPI[i][j]+e[i][k]*htm[k][j];
 						
-					}
-				
-						
+					}	
 				}
 	 }
 	
 	for(int i=0;i<=28;i++)
 		PI[i]=tempPI[0][i];
 	
-	/*if(currHand == 1&& upCard == 5)
-	for(int i=0;i<=28;i++)
-	{	cout<<PI[i]<<" ";
-	
-	
-	}*/calculateDealersStartingHand(upCard);
+	calculateDealersStartingHand(upCard);
 	calculatePI();
 	for(int i=0;i<29;i++)
 	{				
@@ -464,25 +427,21 @@ float getdoubleDownReward(int currHand, int upCard)
 			standWin +=pi1[j];
 						
 			standLoss = 0.0;
-	//	for(int j =valueOfHand[i]-3;j<=17;j++)
-	//		standLoss +=pi1[j];
-		//if(currHand == 1&& upCard == 5)
-			//cout<<"stand:"<<standLoss<<"\n";
-		//for(int j=valueOfHand[i]+7; j<=27;j++)
-		//	standLoss +=pi1[j];
+	
 		for(int j=0;j<28;j++)
 			if(valueOfHand[i]<valueOfHand[j])
 				standLoss +=pi1[j];
-		//if(currHand == 1&& upCard == 5)
-		//	cout<<"stand:"<<standLoss<<" "<<valueOfHand[i]-3<<" "<<valueOfHand[i]+7<<"\n";
+		
 		if(i == 17 || i == 27)
-					standLoss += getLoss(upCard);
+			standLoss += getLoss(upCard);
+		
 		if(i==28)
 		{
 			standLoss = 1;
 			standWin = 0;	
 							
 		}
+		
 		pWin[i][0]=standWin;
 		pLoss[i][0]=standLoss;
 	}
@@ -493,17 +452,20 @@ float getdoubleDownReward(int currHand, int upCard)
 		
 		
 	}
+	
 	doubleWin =0.0;
 	doubleLoss =0.0;
 	float doubleReward =0.0;
+	
 	for(int i=0;i<29;i++)
 		doubleReward += expP[i][0] * PI[i];
+	
 	for(int i=0;i<29;i++)
 		doubleWin += pWin[i][0] * PI[i];
+	
 	for(int i=0;i<29;i++)
 		doubleLoss += pLoss[i][0] * PI[i];
-		//if(currHand==1 && upCard ==5)
-	//cout<<"\ndouble win"<<doubleWin<<" "<<doubleLoss<<"\n";
+	
 	return doubleReward; 
 	
 }
@@ -511,7 +473,6 @@ float getdoubleDownReward(int currHand, int upCard)
 
 void addDouble()
 {
-	//int calculatedAction = 290;
 	
 		float doubleDownReward=0.0;
 		//cout<<calculatedAction<<"\n";
@@ -522,9 +483,8 @@ void addDouble()
 					// k is up card of dealer
 					
 					
-					doubleDownReward = getdoubleDownReward(i, k);  //change
-					//if(i==1 && k==5)
-					//cout<<"\n"<<2*doubleDownReward<<"\n\n";
+					doubleDownReward = getdoubleDownReward(i, k);  
+		
 					if((2*doubleDownReward) >(win[i][k]-loss[i][k]) )
 					{
 							action[i][k]='D';
@@ -549,7 +509,6 @@ void calculateStrategyChart()
 				action[i][j]=' ';
 		do 
 		{
-		//cout<<calculatedAction<<"\n";
 		for(int i=0;i<=28;i++)
 		{
 				for(int k = 1; k<=10; k++)
@@ -565,10 +524,7 @@ void calculateStrategyChart()
 							standWin +=pi1[j];
 					
 					standLoss = 0.0;
-					/*for(int j =valueOfHand[i]-3;j<=17;j++)
-							standLoss +=pi1[j];
-					for(int j=valueOfHand[i]+7;j<=27;j++)
-							standLoss +=pi1[j];*/
+					
 					for(int j=0;j<28;j++)
 						if(valueOfHand[i]<valueOfHand[j])
 								standLoss +=pi1[j];
@@ -581,10 +537,6 @@ void calculateStrategyChart()
 						
 					}
 					
-					
-					//doubleDownReward = getdoubleDownReward(i, k);  //change
-					//if(i==1 && k==5)
-					//cout<<"\n"<<2*doubleDownReward<<"\n\n";
 					hitWin=0.0;
 					int flag =0;
 					for(int j =0;j<29;j++)
@@ -600,7 +552,6 @@ void calculateStrategyChart()
 									hitWin +=htm[i][j]*win[j][k]; 
 									
 								}
-							
 						}
 					
 					hitLoss=0.0;
@@ -608,63 +559,45 @@ void calculateStrategyChart()
 					for(int j =0;j<29;j++)
 						if(htm[i][j]!=0)
 						{
-								if(loss[j][k]==-1)
-								{
-										flag =1;
-										break;
-								}
-								else
-								{
-									hitLoss +=htm[i][j]*loss[j][k]; 
+							if(loss[j][k]==-1)
+							{
+								flag =1;
+								break;
+							}
+							else
+							{
+								hitLoss +=htm[i][j]*loss[j][k]; 
 								
 										
-								}
-							
+							}	
 						}
-					
 					
 					if(flag == 0 && action[i][k]==' ')
 					{
 						
 						if((standWin-standLoss) > (hitWin-hitLoss))
 						{
-							/*if((2*doubleDownReward) > (standWin - standLoss))
-							{
-								action[i][k]='D';
-								win[i][k]=doubleWin;	
-								loss[i][k]=doubleLoss;
-							}else
-							{*/	action[i][k]='S';	
-								win[i][k]=standWin;	
-								loss[i][k]=standLoss;
-							//}
+							action[i][k]='S';	
+							win[i][k]=standWin;	
+							loss[i][k]=standLoss;
+							
 						}
 						else
-						{	/*if((2*doubleDownReward) > (hitWin - hitLoss))
-							{
-								action[i][k]='D';
-								win[i][k]=doubleWin;	
-								loss[i][k]=doubleLoss;
-							}
-							else
-							{*/	action[i][k]='H';	
-								win[i][k]=hitWin;
-								loss[i][k]=hitLoss;
-							//}
+						{	action[i][k]='H';	
+							win[i][k]=hitWin;
+							loss[i][k]=hitLoss;
+							
 						}
 						calculatedAction--;
 					}
 				}
-			
 		}	
-			
-			
-			
 		}while(calculatedAction >0);
 	
 	addDouble();
 	
 }
+
 
 void calculateAAPair()
 {	float exp,standWin,standLoss;
@@ -676,7 +609,7 @@ void calculateAAPair()
 				int temp = getHand(1,i);
 				calculateDealersStartingHand(j);
 				calculatePI();
-			//	cout<<" "<<temp<<"\n";
+		
 				standWin = pi1[28];
 				for(int k =13; k<(valueOfHand[temp]-4);k++)
 							standWin += pi1[k];
@@ -688,8 +621,7 @@ void calculateAAPair()
 				for(int k=0;k<28;k++)
 						if(valueOfHand[temp]<valueOfHand[k])
 								standLoss +=pi1[k];
-				//if(temp==17)
-					//	standLoss +=pi1[27];
+				
 				if(temp == 17 || temp == 27)
 					standLoss += getLoss(j);
 				if(temp==28)
@@ -709,14 +641,11 @@ void calculateAAPair()
 					
 				exp += tempWin * nonFaceCardProb;	
 				}
-				
-			
-			
 		}
 		exp *=2;
 		
 		float prevActionReward = (win[18][j]-loss[18][j]);
-		//cout<<exp<<" "<<prevActionReward<<"\n";
+		
 				if(action[18][j] == 'D')
 					prevActionReward *=2; 
 		
@@ -729,15 +658,11 @@ void calculateAAPair()
 				else
 				{
 					pairAction[9][j]= action[18][j];
-					//cout<<(win[(i+2)*2 - 4][j]-loss[(i+2)*2 -4][j])<<" ";
+					
 				}
-				
-				
 		} 
-	
-
-	
 }
+
 
 void calculatePairAction(){
 	
@@ -752,7 +677,6 @@ void calculatePairAction(){
 				}
 				else
 				{
-					
 						pH = nonFaceCardProb;
 						
 				}	
@@ -779,61 +703,36 @@ void calculatePairAction(){
 							if(action[temp][j]=='D')
 								tempWin *=2;
 							
-							
 								if(k==10)
 								{
-										exp += tempWin * faceCardProb;
-									
+									exp += tempWin * faceCardProb;	
 								}
 								else
 								{
-										exp += tempWin * nonFaceCardProb;
-									
-								}	
-							
-							
+									exp += tempWin * nonFaceCardProb;
+								}		
 						}
 					}
 					
 				}
 				
 				exp = (float)((2 * exp )/(1- 2*pH));
-				//cout<<" "<<win[(i+2)*2 - 4][j]<<" "<< exp<<" "<<action[(i+2)*2-4][j]<<"\n\n";
-			//	if(i==3 && j==5)
-			//	cout<<"win: "<<win[(i+2)*2 - 4][j]-loss[(i+2)*2 -4][j]<<" "<<exp<<" "<<action[(i+2)*2 - 4][j]<<"\n";
+				
 				float prevActionReward = (win[(i+2)*2 - 4][j]-loss[(i+2)*2 -4][j]);
 				if(action[(i+2)*2 - 4][j] == 'D')
 					prevActionReward *=2; 
 				
-				//if( i==1 && j==3)
-				//cout<<win[(i+2)*2 - 4][j]<<" "<<loss[(i+2)*2 -4][j]<<"\n";
+				
 				if(prevActionReward < exp)
 				{
 					pairAction[i][j]='P';
-					//cout<<exp<<" ";
-					
 				}
 				else
 				{
 					pairAction[i][j]= action[(i+2)*2 - 4][j];
-					//cout<<(win[(i+2)*2 - 4][j]-loss[(i+2)*2 -4][j])<<" ";
 				}
-				
-				
 			}	
-				
-		//	cout<<"\n";
-			
-			
-			
-			
-		
-		
-	}	
-	
-
-	
-	
+	}		
 }
 
 int main(int argc, char **argv)
@@ -852,7 +751,7 @@ int main(int argc, char **argv)
 		nonFaceCardProb = (float)((1-faceCardProb )/9);
 		
 		calculateTransitionMatrix();
-		//printTransitionMatrix();
+		
 		copyTransitionMatrix();
 		calculateFinalP();
 		//printFinalTransitionMatrix();
@@ -863,67 +762,11 @@ int main(int argc, char **argv)
 		
 
 		initializeC();
-	/*	for(int i=0;i<=28;i++)
-		{
-				for(int j=0;j<=10;j++)
-					cout<<loss[i][j]<<" ";
-				cout<<"\n";
-				
-			
-		}cout<<"\n\n";
-		for(int i=0;i<=28;i++)
-		{
-				for(int j=0;j<=28;j++)
-					cout<<htm[i][j]<<" ";
-				cout<<"\n";
-				
-			
-		}*/
-		//cout<<"\n\n";
+	
 		calculateStrategyChart();
-		/*
-		for(int i=0;i<=28;i++)
-		{
-				for(int j=0;j<=10;j++)
-					cout<<win[i][j]<<" ";
-				cout<<"\n";
-				
-			
-		}cout<<"\n\n";
-		
-		for(int i=0;i<=28;i++)
-		{
-				for(int j=0;j<=10;j++)
-					cout<<loss[i][j]<<" ";
-				cout<<"\n";
-				
-			
-		}cout<<"\n\n";
-		for(int i=1;i<=28;i++)
-		{	//	cout<<"i: "<<i<<"\n";
-			
-				for(int j=2;j<=10;j++)
-				{
-					cout<<action[i][j]<<" ";
-				
-				}
-			
-					cout<<action[i][1];
-				cout<<"\n";
-				
-			
-		}*/
-		
 		calculatePairAction();
-		//cout<<"\n\n";
+		
 		calculateAAPair();
-	/*	for(int i=0;i<10;i++)
-		{
-		for(int j=2;j<=10;j++)
-			cout<<pairAction[i][j]<<" ";
-			cout<<pairAction[i][1];
-		cout<<"\n";
-		}*/
 		
 		//print complete policy
 		for(int i=1;i<=15;i++)
@@ -958,10 +801,5 @@ int main(int argc, char **argv)
 			
 			
 		}
-		cout<<pairAction[9][1];
-		
-		
-		
-		
-	
+		cout<<pairAction[9][1];	
 }
